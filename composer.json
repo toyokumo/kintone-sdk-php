@@ -1,0 +1,13 @@
+{
+    "name": "cstap/kintone-sdk-php",
+    "authors": [
+        {
+            "name": "Ryo Fukumuro",
+            "email": "rkworks@o0o.co"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "guzzle/guzzle": "v3.8.0"
+    }
+}
