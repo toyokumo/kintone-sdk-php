@@ -44,17 +44,17 @@ class KintoneAuth implements EventSubscriberInterface
             self::AUTH_HEADER,
             $this->buildAuthorizationHeader()
         );
-        
+
         // Basic Auth
         if ($this->config['useBasic']) {
             if ($this->config['basicLogin'] && $this->config['basicPassword']) {
-                $request->setAuth($this->config['basicLogin'], $this->config['basicPassword']);   
+                $request->setAuth($this->config['basicLogin'], $this->config['basicPassword']);
             } else {
                 throw new \RuntimeException("When 'useBasic' is true, you must set 'basicLogin' and 'basicPassword'.");
-                
+
             }
         }
-        
+
     }
 
     protected function buildAuthorizationHeader()
