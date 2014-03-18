@@ -15,11 +15,13 @@ class KintoneClient extends BaseClient
     public static function factory($config = [])
     {
         $default = [
-            'useClientCert' => false
+            'useClientCert' => false,
+            'domain' => "cybozu.com"
         ];
 
         $required = [
             'domain',
+            'subdomain',
             'login',
             'password'
         ];
@@ -37,17 +39,17 @@ class KintoneClient extends BaseClient
 
     public static function getKintoneBaseURL($config)
     {
-        $domain = $config['domain'];
+        $subdomain = $config['subdomain'];
         $useClientCert = $config['useClientCert'];
 
-        $ret = "https://" . $domain;
+        $ret = "https://" . $subdomain;
 
-        if (strpos($domain, '.') === false) {
+        if (strpos($subdomain, '.') === false) {
             if ($useClientCert) {
                 $ret .= ".s";
             }
 
-            $ret .= ".cybozu.com";
+            $ret .= "." . $config['domain'];
         }
         $ret .= static::API_PREFIX;
 

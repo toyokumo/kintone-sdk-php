@@ -6,7 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 
 $client = KintoneClient::factory([
-        'domain'        => "dev-cstap",
+        'subdomain'     => "dev-cstap",
         'login'         => "dev-cstap",
         'password'      => "**",
         'useBasic'      => true,
