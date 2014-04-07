@@ -56,4 +56,32 @@ class KintoneClient extends BaseClient
         return $ret;
     }
 
+    /**
+     * test connection
+     * @return boolean
+     * @throws \Exception
+     */
+    public function testConnection()
+    {
+        try {
+            $response = $this->getFormFields(['app' => -1]); // 不明なアプリIDを指定して通信テスト
+            $url = $response->getEffectiveUrl();
+            if($url && strpos($url, $this->getBaseUrl()) !== 0) {
+                throw new \Exception('指定されたURLが無効です');
+            }
+        } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
+            throw new \Exception('認証情報を正しく設定してください');
+        } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
+            $response = $e->getResponse();
+            if($response->getStatusCode() == 400) {
+                return true;
+            }
+            throw new \Exception('通信テストに失敗しました');
+        } catch (\Exception $e) {
+            throw new \Exception('通信テストに失敗しました');
+        }
+        
+        return false;
+    }
+
 }
