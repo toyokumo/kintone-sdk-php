@@ -58,17 +58,14 @@ class KintoneClient extends BaseClient
 
     /**
      * test connection
+     * 認証テストは不明なアプリIDを指定
      * @return boolean
      * @throws \Exception
      */
-    public function testConnection()
+    public function testConnection($appId = -1)
     {
         try {
-            $response = $this->getFormFields(['app' => -1]); // 不明なアプリIDを指定して通信テスト
-            $url = $response->getEffectiveUrl();
-            if($url && strpos($url, $this->getBaseUrl()) !== 0) {
-                throw new \Exception('指定されたURLが無効です');
-            }
+            $response = $this->getFormFields(['app' => $appId]);
         } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
             throw new \Exception('認証情報を正しく設定してください');
         } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
@@ -80,8 +77,14 @@ class KintoneClient extends BaseClient
         } catch (\Exception $e) {
             throw new \Exception('通信テストに失敗しました');
         }
+        if($response instanceof \Guzzle\Http\Message\Response) {
+            $url = $response->getEffectiveUrl();
+            if($url && strpos($url, $this->getBaseUrl()) !== 0) {
+                throw new \Exception('指定されたURLが無効です');
+            }
+        }
         
-        return false;
+        return true;
     }
 
 }
