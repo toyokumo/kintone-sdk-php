@@ -73,6 +73,9 @@ class KintoneClient extends BaseClient
             if($response->getStatusCode() == 400) {
                 return true;
             }
+            if($response->getStatusCode() == 404) {
+                throw new \Exception('有効なアプリIDではありません');
+            }
             throw new \Exception('通信テストに失敗しました');
         } catch (\Exception $e) {
             throw new \Exception('通信テストに失敗しました');
