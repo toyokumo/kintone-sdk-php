@@ -12,6 +12,20 @@
                     "location": "query"
                 }
             }
+        },
+        "GetRecord": {
+            "httpMethod": "GET",
+            "uri": "record.json",
+            "parameters": {
+                "app": {
+                    "description": "kintone app id",
+                    "location": "query"
+                },
+                "id": {
+                    "description": "record id",
+                    "location": "query"
+                }
+            }
         }
     }
 }
