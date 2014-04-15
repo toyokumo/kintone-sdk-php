@@ -55,6 +55,16 @@ class KintoneAuth implements EventSubscriberInterface
             }
         }
 
+        // クライアント証明書
+        if ($this->config['useClientCert']) {
+            if ($this->config['certFile'] && $this->config['certPassword']) {
+                $opts = $request->getCurlOptions();
+                $opts->set(CURLOPT_SSL_VERIFYHOST, false);
+                $opts->set(CURLOPT_SSL_VERIFYPEER, false);
+                $opts->set(CURLOPT_CAINFO, $this->config['certFile']);
+                $opts->set(CURLOPT_SSLCERTPASSWD, $this->config['certPassword']);
+            }
+        }
     }
 
     protected function buildAuthorizationHeader()
