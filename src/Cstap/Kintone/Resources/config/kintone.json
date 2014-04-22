@@ -44,6 +44,16 @@
                     "location": "query"
                 }
             }
+        },
+        "GetFile": {
+            "httpMethod": "GET",
+            "uri": "file.json",
+            "parameters": {
+                "fileKey": {
+                    "description": "file key",
+                    "location": "query"
+                }
+            }
         }
     }
 }
