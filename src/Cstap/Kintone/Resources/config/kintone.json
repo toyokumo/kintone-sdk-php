@@ -41,6 +41,46 @@
                 }
             }
         },
+        "PutRecord": {
+            "httpMethod": "PUT",
+            "uri": "record.json",
+            "parameters": {
+                "app": {
+                    "description": "kintone app id",
+                    "location": "json"
+                },
+                "id": {
+                    "description": "record id",
+                    "location": "json"
+                },
+                "revision": {
+                    "description": "revision number",
+                    "location": "json"
+                },
+                "record": {
+                    "description": "record data",
+                    "location": "json"
+                }
+            }
+        },
+        "DeleteRecord": {
+            "httpMethod": "DELETE",
+            "uri": "record.json",
+            "parameters": {
+                "app": {
+                    "description": "kintone app id",
+                    "location": "json"
+                },
+                "ids": {
+                    "description": "record ids",
+                    "location": "json"
+                },
+                "revisions": {
+                    "description": "revision numbers",
+                    "location": "json"
+                }
+            }
+        },
         "GetRecords": {
             "httpMethod": "GET",
             "uri": "records.json",
