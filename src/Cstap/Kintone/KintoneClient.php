@@ -70,22 +70,8 @@ class KintoneClient extends BaseClient
      */
     public function testConnection($appId = -1)
     {
-        try {
-            $response = $this->getFormFields(['app' => $appId]);
-        } catch (\Guzzle\Http\Exception\ServerErrorResponseException $e) {
-            throw new \Exception('認証情報を正しく設定してください');
-        } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
-            $response = $e->getResponse();
-            if($response->getStatusCode() == 400) {
-                return true;
-            }
-            if($response->getStatusCode() == 404) {
-                throw new \Exception('有効なアプリIDではありません');
-            }
-            throw new \Exception('通信テストに失敗しました');
-        } catch (\Exception $e) {
-            throw new \Exception('通信テストに失敗しました');
-        }
+        $response = $this->getFormFields(['app' => $appId]);
+        
         if($response instanceof \Guzzle\Http\Message\Response) {
             $url = $response->getEffectiveUrl();
             if($url && strpos($url, $this->getBaseUrl()) !== 0) {
