@@ -27,6 +27,20 @@
                 }
             }
         },
+        "PostRecord": {
+            "httpMethod": "POST",
+            "uri": "record.json",
+            "parameters": {
+                "app": {
+                    "description": "kintone app id",
+                    "location": "json"
+                },
+                "record": {
+                    "description": "record data",
+                    "location": "json"
+                }
+            }
+        },
         "GetRecords": {
             "httpMethod": "GET",
             "uri": "records.json",
