@@ -7,6 +7,9 @@ use Guzzle\Common\Collection;
 use Guzzle\Service\Description\ServiceDescription;
 use Cstap\Kintone\Plugin\KintoneAuth;
 use Cstap\Kintone\Plugin\KintoneError;
+use Guzzle\Plugin\Log\LogPlugin;
+//use Guzzle\Service\Builder\ServiceBuilder;
+//use Guzzle\Service\Builder\ServiceBuilderLoader;
 
 class KintoneClient extends BaseClient
 {
@@ -34,6 +37,9 @@ class KintoneClient extends BaseClient
         $client->addSubscriber(new KintoneError($config->toArray()));
         $client->setDescription(ServiceDescription::factory(__DIR__ . "/Resources/config/kintone.json"));
 
+        $logPlugin = LogPlugin::getDebugPlugin(TRUE, fopen(__DIR__  . '/../../../app/logs/kintone.log', 'a'));
+        $client->addSubscriber($logPlugin);
+        
         return $client;
     }
 
