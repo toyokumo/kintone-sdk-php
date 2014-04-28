@@ -59,9 +59,8 @@ class KintoneAuth implements EventSubscriberInterface
         if ($this->config['useClientCert']) {
             if ($this->config['certFile'] && $this->config['certPassword']) {
                 $opts = $request->getCurlOptions();
-                $opts->set(CURLOPT_SSL_VERIFYHOST, false);
-                $opts->set(CURLOPT_SSL_VERIFYPEER, false);
-                $opts->set(CURLOPT_CAINFO, $this->config['certFile']);
+                $opts->set(CURLOPT_SSL_VERIFYPEER, true);
+                $opts->set(CURLOPT_SSLCERT, $this->config['certFile']);
                 $opts->set(CURLOPT_SSLCERTPASSWD, $this->config['certPassword']);
             }
         }

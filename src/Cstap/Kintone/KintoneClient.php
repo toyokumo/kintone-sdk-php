@@ -70,7 +70,11 @@ class KintoneClient extends BaseClient
      */
     public function testConnection($appId = -1)
     {
-        $response = $this->getFormFields(['app' => $appId]);
+        try {
+            $response = $this->getFormFields(['app' => $appId]);
+        } catch (\Exception $e) {
+            return true;
+        }
         
         if($response instanceof \Guzzle\Http\Message\Response) {
             $url = $response->getEffectiveUrl();
