@@ -20,6 +20,11 @@ class KintoneError implements EventSubscriberInterface
      * @var \Guzzle\Http\Message\Response
      */
     protected $response;
+    
+    /**
+     * @var \Guzzle\Http\Exception\CurlException
+     */
+    protected $exception;
 
     public function __construct($config)
     {
@@ -36,7 +41,7 @@ class KintoneError implements EventSubscriberInterface
     {
         return [
             'request.error' => ['onRequestError', 1000],
-            'request.send' => ['onSuccessRequest', 1000]
+            'request.exception' => ['onRequestException', 1000]
         ];
     }
 
@@ -82,6 +87,18 @@ class KintoneError implements EventSubscriberInterface
         }
     }
     
+    public function onRequestException(Event $event)
+    {
+        $this->request = $event->offsetGet('request');
+        $this->response = $event->offsetGet('response');
+        $this->exception = $event->offsetGet('exception');
+        
+        if ($this->exception instanceof \Guzzle\Http\Exception\CurlException) {
+            throw new \Exception('クライアント証明書もしくは証明書のパスワードが異なります');
+        }
+        throw new \Exception($this->exception->getMessage());
+    }
+
     /**
      * is test connection
      * @return boolean
