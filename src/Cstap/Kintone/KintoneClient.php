@@ -73,7 +73,11 @@ class KintoneClient extends BaseClient
         try {
             $response = $this->getFormFields(['app' => $appId]);
         } catch (\Exception $e) {
-            return true;
+            $msg = $e->getMessage();
+            if ($msg == 'success') {
+                return true;
+            }
+            throw new \Exception($msg);
         }
         
         if($response instanceof \Guzzle\Http\Message\Response) {

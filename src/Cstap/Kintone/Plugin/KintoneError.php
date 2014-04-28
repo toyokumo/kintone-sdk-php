@@ -48,10 +48,19 @@ class KintoneError implements EventSubscriberInterface
         switch ($this->response->getStatusCode()) {
             case 400:
                 if ($this->isTestConnection()) {
-                    break;  // 通信テスト成功
+                    throw new \Exception('success'); // 通信テスト成功
                 }
                 $body = json_decode($this->response->getBody(true), true);
                 throw new \Exception($body['message']);
+                
+            case 403:
+                $body = $this->response->getBody(true);
+                if (preg_match("/<[^<]+>/",$body,$m) != 0) {
+                    throw new \Exception('認証情報を正しく設定してください');
+                }else{
+                    $body = json_decode($body, true);
+                    throw new \Exception($body['message']);
+                }
                 
             case 404:
                 $body = json_decode($this->response->getBody(true), true);
