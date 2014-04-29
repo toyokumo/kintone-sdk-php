@@ -45,48 +45,36 @@ class KintoneError implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * request error
+     * @param \Guzzle\Common\Event $event
+     */
     public function onRequestError(Event $event)
     {
         $this->request = $event->offsetGet('request');
         $this->response = $event->offsetGet('response');
+        $body = $this->response->getBody(true);
         
         switch ($this->response->getStatusCode()) {
             case 400:
-                if ($this->isTestConnection()) {
-                    throw new \Exception('success'); // 通信テスト成功
-                }
-                $body = json_decode($this->response->getBody(true), true);
-                throw new \Exception($body['message']);
-                
-            case 403:
-                $body = $this->response->getBody(true);
-                if (preg_match("/<[^<]+>/",$body,$m) != 0) {
-                    throw new \Exception('認証情報を正しく設定してください');
-                }else{
-                    $body = json_decode($body, true);
-                    throw new \Exception($body['message']);
-                }
-                
-            case 404:
-                $body = json_decode($this->response->getBody(true), true);
-                throw new \Exception($body['message']);
+                $this->error400($body);
+                break;
                 
             case 520:
-                $body = json_decode($this->response->getBody(true), true);
-                $code = $body['code'];
-                switch ($code) {
-                    case 'CB_AU01':
-                        throw new \Exception('認証情報を正しく設定してください');
-                    default:
-                        throw new \Exception($body['message']);
-                }
-                
+                $this->error520($body);
+                break;
+            
             default:
-                $body = json_decode($this->response->getBody(true), true);
-                throw new \Exception($body['message']);
+                $this->commonError($body);
+                break;
         }
     }
     
+    /**
+     * curl error
+     * @param \Guzzle\Common\Event $event
+     * @throws \Exception
+     */
     public function onRequestException(Event $event)
     {
         $this->request = $event->offsetGet('request');
@@ -112,4 +100,59 @@ class KintoneError implements EventSubscriberInterface
         }
         return false;
     }
+    
+    /**
+     * error
+     * @param string $body
+     * @throws \Exception
+     */
+    private function commonError($body)
+    {
+        if (preg_match("/<[^<]+>/", $body) != 0) {
+            throw new \Exception('認証情報を正しく設定してください');
+        }else{
+            $body = json_decode($body, true);
+            throw new \Exception($body['message']);
+        }
+    }
+    
+    /**
+     * error
+     * @param string $body
+     * @throws \Exception
+     */
+    private function error400($body)
+    {
+        if (preg_match("/<[^<]+>/", $body) != 0) {
+            throw new \Exception('認証情報を正しく設定してください');
+        }else{
+            $body = json_decode($body, true);
+            if ($this->isTestConnection() && $body['code'] == 'CB_VA01') {
+                throw new \Exception('success'); // 通信テスト成功
+            }
+            throw new \Exception($body['message']);
+        }
+    }
+    
+    /**
+     * error
+     * @param string $body
+     * @throws \Exception
+     */
+    private function error520($body)
+    {
+        if (preg_match("/<[^<]+>/", $body) != 0) {
+            throw new \Exception('認証情報を正しく設定してください');
+        }else{
+            $body = json_decode($body, true);
+            $code = $body['code'];
+            switch ($code) {
+                case 'CB_AU01':
+                    throw new \Exception('認証情報を正しく設定してください');
+                default:
+                    throw new \Exception($body['message']);
+            }
+        }
+    }
+
 }
