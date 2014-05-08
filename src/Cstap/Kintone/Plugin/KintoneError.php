@@ -82,7 +82,15 @@ class KintoneError implements EventSubscriberInterface
         $this->exception = $event->offsetGet('exception');
         
         if ($this->exception instanceof \Guzzle\Http\Exception\CurlException) {
-            throw new \Exception('クライアント証明書もしくは証明書のパスワードが異なります');
+            $errorNumber = $this->exception->getErrorNo();
+            switch ($errorNumber) {
+                case 6:
+                    throw new \Exception('URLもしくはサブドメインが不正です');
+                case 35:
+                    throw new \Exception('クライアント証明書もしくは証明書のパスワードが異なります');
+                default:
+                    throw new \Exception('認証情報を正しく設定してください');
+            }
         }
         throw new \Exception($this->exception->getMessage());
     }
