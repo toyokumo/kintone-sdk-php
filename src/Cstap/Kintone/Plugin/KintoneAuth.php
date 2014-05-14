@@ -51,9 +51,14 @@ class KintoneAuth implements EventSubscriberInterface
                 $request->setAuth($this->config['basicLogin'], $this->config['basicPassword']);
             } else {
                 throw new \RuntimeException("When 'useBasic' is true, you must set 'basicLogin' and 'basicPassword'.");
-
             }
         }
+        
+        // default curl options
+        $opts = $request->getCurlOptions();
+        $opts->set(CURLOPT_SSL_VERIFYPEER, false);
+        $opts->set(CURLOPT_SSL_VERIFYHOST, false);
+        $opts->set(CURLOPT_CAINFO, null);
 
         // クライアント証明書
         if ($this->config['useClientCert']) {
