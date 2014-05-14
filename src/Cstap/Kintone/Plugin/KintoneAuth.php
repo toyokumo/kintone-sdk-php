@@ -50,7 +50,7 @@ class KintoneAuth implements EventSubscriberInterface
             if ($this->config['basicLogin'] && $this->config['basicPassword']) {
                 $request->setAuth($this->config['basicLogin'], $this->config['basicPassword']);
             } else {
-                throw new \RuntimeException("When 'useBasic' is true, you must set 'basicLogin' and 'basicPassword'.");
+                throw new \RuntimeException("Basic認証を利用する場合は、パスワードを指定してください");
             }
         }
         
