@@ -6,6 +6,7 @@ use Guzzle\Common\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Guzzle\Common\Collection;
 use Cstap\Kintone\Common\Exception\KintoneException;
+use Cstap\Kintone\Common\Exception\KintoneTestConnectionSuccessException;
 
 class KintoneError implements EventSubscriberInterface
 {
