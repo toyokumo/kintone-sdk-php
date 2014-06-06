@@ -137,7 +137,7 @@ class KintoneError implements EventSubscriberInterface
         }else{
             $body = json_decode($body, true);
             if ($this->isTestConnection() && $body['code'] == 'CB_VA01') {
-                throw new KintoneException('success'); // 通信テスト成功
+                throw new KintoneTestConnectionSuccessException('success'); // 通信テスト成功
             }
             throw new \Exception($body['message']);
         }
