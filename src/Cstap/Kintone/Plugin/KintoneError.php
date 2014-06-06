@@ -5,6 +5,7 @@ namespace Cstap\Kintone\Plugin;
 use Guzzle\Common\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Guzzle\Common\Collection;
+use Cstap\Kintone\Common\Exception\KintoneException;
 
 class KintoneError implements EventSubscriberInterface
 {
@@ -73,7 +74,7 @@ class KintoneError implements EventSubscriberInterface
     /**
      * curl error
      * @param \Guzzle\Common\Event $event
-     * @throws \Exception
+     * @throws KintoneException
      */
     public function onRequestException(Event $event)
     {
@@ -85,11 +86,11 @@ class KintoneError implements EventSubscriberInterface
             $errorNumber = $this->exception->getErrorNo();
             switch ($errorNumber) {
                 case 6:
-                    throw new \Exception('URLもしくはサブドメインが不正です');
+                    throw new KintoneException('kintone.unknown_url');
                 case 35:
-                    throw new \Exception('クライアント証明書もしくは証明書のパスワードが異なります');
+                    throw new KintoneException('kintone.invalid_cert');
                 default:
-                    throw new \Exception('認証情報を正しく設定してください');
+                    throw new KintoneException('kintone.invalid_auth');
             }
         }
         throw new \Exception($this->exception->getMessage());
@@ -112,12 +113,12 @@ class KintoneError implements EventSubscriberInterface
     /**
      * error
      * @param string $body
-     * @throws \Exception
+     * @throws KintoneException
      */
     private function commonError($body)
     {
         if (preg_match("/<[^<]+>/", $body) != 0) {
-            throw new \Exception('認証情報を正しく設定してください');
+            throw new KintoneException('kintone.invalid_auth');
         }else{
             $body = json_decode($body, true);
             throw new \Exception($body['message']);
@@ -127,16 +128,16 @@ class KintoneError implements EventSubscriberInterface
     /**
      * error
      * @param string $body
-     * @throws \Exception
+     * @throws KintoneException
      */
     private function error400($body)
     {
         if (preg_match("/<[^<]+>/", $body) != 0) {
-            throw new \Exception('認証情報を正しく設定してください');
+            throw new KintoneException('kintone.invalid_auth');
         }else{
             $body = json_decode($body, true);
             if ($this->isTestConnection() && $body['code'] == 'CB_VA01') {
-                throw new \Exception('success'); // 通信テスト成功
+                throw new KintoneException('success'); // 通信テスト成功
             }
             throw new \Exception($body['message']);
         }
@@ -145,18 +146,18 @@ class KintoneError implements EventSubscriberInterface
     /**
      * error
      * @param string $body
-     * @throws \Exception
+     * @throws KintoneException
      */
     private function error520($body)
     {
         if (preg_match("/<[^<]+>/", $body) != 0) {
-            throw new \Exception('認証情報を正しく設定してください');
+            throw new KintoneException('kintone.invalid_auth');
         }else{
             $body = json_decode($body, true);
             $code = $body['code'];
             switch ($code) {
                 case 'CB_AU01':
-                    throw new \Exception('認証情報を正しく設定してください');
+                    throw new KintoneException('kintone.invalid_auth');
                 default:
                     throw new \Exception($body['message']);
             }

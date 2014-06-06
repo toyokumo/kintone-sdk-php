@@ -11,8 +11,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "guzzle/guzzle": "v3.8.0"
+        "php": ">=5.4.1",
+        "guzzle/guzzle": "v3.8.0",
+        "symfony/yaml": "~2.0"
     },
     "autoload": {
         "psr-0": {

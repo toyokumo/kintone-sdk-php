@@ -8,8 +8,7 @@ use Guzzle\Service\Description\ServiceDescription;
 use Cstap\Kintone\Plugin\KintoneAuth;
 use Cstap\Kintone\Plugin\KintoneError;
 use Guzzle\Plugin\Log\LogPlugin;
-//use Guzzle\Service\Builder\ServiceBuilder;
-//use Guzzle\Service\Builder\ServiceBuilderLoader;
+use Cstap\Kintone\Common\Exception\KintoneTestConnectionSuccessException;
 
 class KintoneClient extends BaseClient
 {
@@ -72,18 +71,14 @@ class KintoneClient extends BaseClient
     {
         try {
             $response = $this->getFormFields(['app' => $appId]);
-        } catch (\Exception $e) {
-            $msg = $e->getMessage();
-            if ($msg == 'success') {
-                return true;
-            }
-            throw new \Exception($msg);
+        } catch (KintoneTestConnectionSuccessException $e) {
+            return true;
         }
         
         if($response instanceof \Guzzle\Http\Message\Response) {
             $url = $response->getEffectiveUrl();
             if($url && strpos($url, $this->getBaseUrl()) !== 0) {
-                throw new \Exception('指定されたURLが無効です');
+                throw new \Exception('kintone.unknown_url');
             }
         }
         

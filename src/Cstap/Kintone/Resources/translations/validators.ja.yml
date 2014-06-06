@@ -1,0 +1,5 @@
+kintone.unknown_url: URLもしくはサブドメインが不正です
+kintone.invalid_auth: 認証情報を正しく設定してください
+kintone.invalid_cert: クライアント証明書もしくは証明書のパスワードが異なります
+kintone.empty_basic_password: Basic認証を利用する場合は、パスワードを指定してください
+kintone.empty_cert_password:  クライアント証明書を利用する場合は、パスワードを指定してください

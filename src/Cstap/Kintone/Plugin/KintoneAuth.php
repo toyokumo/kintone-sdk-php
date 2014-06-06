@@ -5,6 +5,7 @@ namespace Cstap\Kintone\Plugin;
 use Guzzle\Common\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Guzzle\Common\Collection;
+use Cstap\Kintone\Common\Exception\KintoneException;
 
 class KintoneAuth implements EventSubscriberInterface
 {
@@ -50,7 +51,7 @@ class KintoneAuth implements EventSubscriberInterface
             if ($this->config['basicLogin'] && $this->config['basicPassword']) {
                 $request->setAuth($this->config['basicLogin'], $this->config['basicPassword']);
             } else {
-                throw new \RuntimeException("Basic認証を利用する場合は、パスワードを指定してください");
+                throw new KintoneException("kintone.empty_basic_password");
             }
         }
         
@@ -70,6 +71,8 @@ class KintoneAuth implements EventSubscriberInterface
                 $opts->set(CURLOPT_SSL_VERIFYHOST, 2);
                 $opts->set(CURLOPT_SSLCERT, $this->config['certFile']);
                 $opts->set(CURLOPT_SSLCERTPASSWD, $this->config['certPassword']);
+            } else {
+                throw new KintoneException('kintone.empty_cert_password');
             }
         }
     }
