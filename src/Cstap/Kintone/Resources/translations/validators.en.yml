@@ -1,5 +1,5 @@
-kintone.unknown_url: Subdomain or URL is invalid
-kintone.invalid_auth: Please set the correct authentication information
-kintone.invalid_cert: Password for the certificate or client certificate is different 
-kintone.empty_basic_password: When using the Basic authentication, please specify the password 
-kintone.empty_cert_password: If you use a client certificate, please specify the password
+kintone.unknown_url: Invalid subdomain name or URL.
+kintone.invalid_auth: Enter the correct authentication information.
+kintone.invalid_cert: Invalid client certificate, or invalid certificate password.
+kintone.empty_basic_password: To use the Basic authentication, enter the password for the Basic authentication.
+kintone.empty_cert_password: To use the client certificate, enter the password for the client certificate.
