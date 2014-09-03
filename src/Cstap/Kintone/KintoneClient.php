@@ -2,65 +2,54 @@
 
 namespace Cstap\Kintone;
 
-use Guzzle\Service\Client as BaseClient;
-use Guzzle\Common\Collection;
-use Guzzle\Service\Description\ServiceDescription;
-use Cstap\Kintone\Plugin\KintoneAuth;
-use Cstap\Kintone\Plugin\KintoneError;
-use Guzzle\Plugin\Log\LogPlugin;
+use Cstap\Kintone\KintoneClientBase as ClientBase;
 use Cstap\Kintone\Common\Exception\KintoneTestConnectionSuccessException;
 
-class KintoneClient extends BaseClient
+class KintoneClient extends ClientBase
 {
+    // @todo: 下記const定数はゲストスペース非対応のため相応しくないが以下に影響
+    // * printCreator:
+    //  - src\App\Pdf\Populator\QrPopulator.php
     const API_PREFIX = "/k/v1";
 
-    public static function factory($config = [])
+    /**
+     * getKintoneBaseURL
+     * 
+     * @param array $config
+     * @param integer $guestSpaceId
+     * @return string
+     * @todo: 本メソッドはゲストスペース非対応時以下メソッドのためのエイリアス
+     * * printCreator:
+     *  - src\App\Pdf\Populator\QrPopulator.php
+     */
+    public static function getKintoneBaseURL($config, $guestSpaceId = 0)
     {
-        $default = [
-            'useClientCert' => false,
-            'domain' => "cybozu.com"
-        ];
+        return parent::getApiPathBase($config, $guestSpaceId);
+    }
 
-        $required = [
-            'domain',
-            'subdomain',
-            'login',
-            'password'
-        ];
-
-        $config = Collection::fromConfig($config, $default, $required);
-        $baseURL = self::getKintoneBaseURL($config);
-
-        $client = new self($baseURL, $config);
-        $client->addSubscriber(new KintoneAuth($config->toArray()));
-        $client->addSubscriber(new KintoneError($config->toArray()));
-        $client->setDescription(ServiceDescription::factory(__DIR__ . "/Resources/config/kintone.json"));
-
-        $logPlugin = LogPlugin::getDebugPlugin(TRUE, fopen(__DIR__  . '/../../../app/logs/kintone.log', 'a'));
-        $client->addSubscriber($logPlugin);
+    /**
+     * getKintoneBrowseUrl
+     * ブラウジングする際のURL
+     * 
+     * @param array $config
+     * @param integer $appId
+     * @param integer $guestSpaceId
+     * @return string
+     * ex) https://subdomain.cybozu.com/k/[appId]
+     */
+    public static function getKintoneBrowseUrl($config, $appId, $guestSpaceId = 0)
+    {
+        $appId = (integer) $appId;
+        $guestSpaceId = (integer) $guestSpaceId;
         
-        return $client;
-    }
-
-    public static function getKintoneBaseURL($config)
-    {
-        $subdomain = $config['subdomain'];
-        $useClientCert = $config['useClientCert'];
-
-        $ret = "https://" . $subdomain;
-
-        if (strpos($subdomain, '.') === false) {
-            if ($useClientCert) {
-                $ret .= ".s";
-            }
-
-            $ret .= "." . $config['domain'];
+        $base = self::getURLBase($config);
+        if ($guestSpaceId) {
+            return $base.sprintf("guest/%d/%d/", $guestSpaceId, $appId);
         }
-        $ret .= static::API_PREFIX;
-
-        return $ret;
+        
+        return $base.$appId;
     }
-
+    
     /**
      * test connection
      * 認証テストは不明なアプリIDを指定
@@ -84,5 +73,4 @@ class KintoneClient extends BaseClient
         
         return true;
     }
-
 }
