@@ -2,11 +2,7 @@
 namespace Cstap\Kintone;
 
 use Guzzle\Service\Client as BaseClient;
-use Guzzle\Common\Collection;
-use Guzzle\Service\Description\ServiceDescription;
-use Cstap\Kintone\Plugin\KintoneAuth;
-use Cstap\Kintone\Plugin\KintoneError;
-use Guzzle\Plugin\Log\LogPlugin;
+
 
 /**
  * Description of KintoneClientBase

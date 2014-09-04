@@ -4,6 +4,11 @@ namespace Cstap\Kintone;
 
 use Cstap\Kintone\KintoneClientBase as ClientBase;
 use Cstap\Kintone\Common\Exception\KintoneTestConnectionSuccessException;
+use Guzzle\Common\Collection;
+use Guzzle\Service\Description\ServiceDescription;
+use Cstap\Kintone\Plugin\KintoneAuth;
+use Cstap\Kintone\Plugin\KintoneError;
+use Guzzle\Plugin\Log\LogPlugin;
 
 class KintoneClient extends ClientBase
 {
