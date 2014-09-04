@@ -13,6 +13,39 @@ class KintoneClient extends ClientBase
     const API_PREFIX = "/k/v1";
 
     /**
+     * factory
+     * 
+     * @param array $config
+     * @return \self
+     */
+    public static function factory($config = [])
+    {
+        $default = [
+            'useClientCert' => false,
+            'domain' => "cybozu.com"
+        ];
+
+        $required = [
+            'domain',
+            'subdomain',
+            'login',
+            'password'
+        ];
+
+        $config = Collection::fromConfig($config, $default, $required);
+
+        $client = new self(null, $config);
+        $client->addSubscriber(new KintoneAuth($config->toArray()));
+        $client->addSubscriber(new KintoneError($config->toArray()));
+        $client->setDescription(ServiceDescription::factory(__DIR__ . "/Resources/config/kintone.json"));
+
+        $logPlugin = LogPlugin::getDebugPlugin(TRUE, fopen(__DIR__  . '/../../../app/logs/kintone.log', 'a'));
+        $client->addSubscriber($logPlugin);
+        
+        return $client;
+    }
+    
+    /**
      * getKintoneBaseURL
      * 
      * @param array $config
