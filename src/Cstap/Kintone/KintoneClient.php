@@ -39,7 +39,7 @@ class KintoneClient extends ClientBase
 
         $config = Collection::fromConfig($config, $default, $required);
 
-        $client = new self(null, $config);
+        $client = new self(parent::getApiPathBase($config), $config);
         $client->addSubscriber(new KintoneAuth($config->toArray()));
         $client->addSubscriber(new KintoneError($config->toArray()));
         $client->setDescription(ServiceDescription::factory(__DIR__ . "/Resources/config/kintone.json"));
