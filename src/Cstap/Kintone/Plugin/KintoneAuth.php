@@ -54,12 +54,12 @@ class KintoneAuth implements EventSubscriberInterface
                 throw new KintoneException("kintone.empty_basic_password");
             }
         }
-        
+
         // default curl options
         $opts = $request->getCurlOptions();
         $opts->set(CURLOPT_SSL_VERIFYPEER, false);
         $opts->set(CURLOPT_SSL_VERIFYHOST, false);
-        
+
         //$opts->set(CURLOPT_VERBOSE, true);
         //$opts->set(CURLOPT_STDERR, fopen(__DIR__  . '/../../../../app/logs/kintone.log', 'w'));
 

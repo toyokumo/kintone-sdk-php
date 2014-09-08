@@ -102,6 +102,7 @@
         "GetFile": {
             "httpMethod": "GET",
             "uri": "file.json",
+            "responseClass": "Cstap\\Kintone\\Response\\RawResponse",
             "parameters": {
                 "fileKey": {
                     "description": "file key",

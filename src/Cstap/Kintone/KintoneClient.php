@@ -19,8 +19,8 @@ class KintoneClient extends ClientBase
 
     /**
      * factory
-     * 
-     * @param array $config
+     *
+     * @param  array $config
      * @return \self
      */
     public static function factory($config = [])
@@ -46,19 +46,19 @@ class KintoneClient extends ClientBase
 
         $logPlugin = LogPlugin::getDebugPlugin(TRUE, fopen(__DIR__  . '/../../../app/logs/kintone.log', 'a'));
         $client->addSubscriber($logPlugin);
-        
+
         return $client;
     }
-    
+
     /**
      * getKintoneBaseURL
-     * 
-     * @param array $config
-     * @param integer $guestSpaceId
+     *
+     * @param  array   $config
+     * @param  integer $guestSpaceId
      * @return string
      * @todo: 本メソッドはゲストスペース非対応時以下メソッドのためのエイリアス
-     * * printCreator:
-     *  - src\App\Pdf\Populator\QrPopulator.php
+     *                              * printCreator:
+     *                              - src\App\Pdf\Populator\QrPopulator.php
      */
     public static function getKintoneBaseURL($config, $guestSpaceId = 0)
     {
@@ -68,26 +68,26 @@ class KintoneClient extends ClientBase
     /**
      * getKintoneBrowseUrl
      * ブラウジングする際のURL
-     * 
-     * @param array $config
-     * @param integer $appId
-     * @param integer $guestSpaceId
+     *
+     * @param  array   $config
+     * @param  integer $appId
+     * @param  integer $guestSpaceId
      * @return string
-     * ex) https://subdomain.cybozu.com/k/[appId]
+     *                              ex) https://subdomain.cybozu.com/k/[appId]
      */
     public static function getKintoneBrowseUrl($config, $appId, $guestSpaceId = 0)
     {
         $appId = (integer) $appId;
         $guestSpaceId = (integer) $guestSpaceId;
-        
+
         $base = self::getURLBase($config);
         if ($guestSpaceId) {
             return $base.sprintf("guest/%d/%d/", $guestSpaceId, $appId);
         }
-        
+
         return $base.$appId;
     }
-    
+
     /**
      * test connection
      * 認証テストは不明なアプリIDを指定
@@ -101,14 +101,14 @@ class KintoneClient extends ClientBase
         } catch (KintoneTestConnectionSuccessException $e) {
             return true;
         }
-        
-        if($response instanceof \Guzzle\Http\Message\Response) {
+
+        if ($response instanceof \Guzzle\Http\Message\Response) {
             $url = $response->getEffectiveUrl();
-            if($url && strpos($url, $this->getBaseUrl()) !== 0) {
+            if ($url && strpos($url, $this->getBaseUrl()) !== 0) {
                 throw new \Exception('kintone.unknown_url');
             }
         }
-        
+
         return true;
     }
 }

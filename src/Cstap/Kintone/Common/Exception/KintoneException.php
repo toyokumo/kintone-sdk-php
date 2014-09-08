@@ -8,20 +8,19 @@ class KintoneException extends \RuntimeException
 {
     private static $messages = null;
 
-
     public function getLocaleMessage($locale = 'ja')
     {
         $this->loadLocaleMessages($locale);
-        
+
         $message = parent::getMessage();
-        
+
         if (isset(static::$messages[$locale][$message])) {
             $message = static::$messages[$locale][$message];
         }
-        
+
         return $message;
     }
-    
+
     private function loadLocaleMessages($locale = 'ja')
     {
         if (!isset(static::$messages[$locale])) {

@@ -11,18 +11,17 @@ use Cstap\Kintone\Common\Exception\KintoneTestConnectionSuccessException;
 class KintoneError implements EventSubscriberInterface
 {
     protected $config;
-    
-    
+
     /**
      * @var \Guzzle\Http\Message\Request
      */
     protected $request;
-    
+
     /**
      * @var \Guzzle\Http\Message\Response
      */
     protected $response;
-    
+
     /**
      * @var \Guzzle\Http\Exception\CurlException
      */
@@ -56,25 +55,25 @@ class KintoneError implements EventSubscriberInterface
         $this->request = $event->offsetGet('request');
         $this->response = $event->offsetGet('response');
         $body = $this->response->getBody(true);
-        
+
         switch ($this->response->getStatusCode()) {
             case 400:
                 $this->error400($body);
                 break;
-                
+
             case 520:
                 $this->error520($body);
                 break;
-            
+
             default:
                 $this->commonError($body);
                 break;
         }
     }
-    
+
     /**
      * curl error
-     * @param \Guzzle\Common\Event $event
+     * @param  \Guzzle\Common\Event $event
      * @throws KintoneException
      */
     public function onRequestException(Event $event)
@@ -82,7 +81,7 @@ class KintoneError implements EventSubscriberInterface
         $this->request = $event->offsetGet('request');
         $this->response = $event->offsetGet('response');
         $this->exception = $event->offsetGet('exception');
-        
+
         if ($this->exception instanceof \Guzzle\Http\Exception\CurlException) {
             $errorNumber = $this->exception->getErrorNo();
             switch ($errorNumber) {
@@ -108,34 +107,35 @@ class KintoneError implements EventSubscriberInterface
             // 通信テスト成功
             return true;
         }
+
         return false;
     }
-    
+
     /**
      * error
-     * @param string $body
+     * @param  string           $body
      * @throws KintoneException
      */
     private function commonError($body)
     {
         if (preg_match("/<[^<]+>/", $body) != 0) {
             throw new KintoneException('kintone.invalid_auth');
-        }else{
+        } else {
             $body = json_decode($body, true);
             throw new \Exception($body['message']);
         }
     }
-    
+
     /**
      * error
-     * @param string $body
+     * @param  string           $body
      * @throws KintoneException
      */
     private function error400($body)
     {
         if (preg_match("/<[^<]+>/", $body) != 0) {
             throw new KintoneException('kintone.invalid_auth');
-        }else{
+        } else {
             $body = json_decode($body, true);
             if ($this->isTestConnection() && $body['code'] == 'CB_VA01') {
                 throw new KintoneTestConnectionSuccessException('success'); // 通信テスト成功
@@ -143,17 +143,17 @@ class KintoneError implements EventSubscriberInterface
             throw new \Exception($body['message']);
         }
     }
-    
+
     /**
      * error
-     * @param string $body
+     * @param  string           $body
      * @throws KintoneException
      */
     private function error520($body)
     {
         if (preg_match("/<[^<]+>/", $body) != 0) {
             throw new KintoneException('kintone.invalid_auth');
-        }else{
+        } else {
             $body = json_decode($body, true);
             $code = $body['code'];
             switch ($code) {
