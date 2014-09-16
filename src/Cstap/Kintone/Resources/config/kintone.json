@@ -109,6 +109,46 @@
                     "location": "query"
                 }
             }
+        },
+        "GetApp": {
+            "httpMethod": "GET",
+            "uri": "app.json",
+            "parameters": {
+                "id": {
+                    "description": "kintone app id",
+                    "location": "query"
+                }
+            }
+        },
+        "GetApps": {
+            "httpMethod": "GET",
+            "uri": "apps.json",
+            "parameters": {
+                "ids": {
+                    "description": "list of kintone app id",
+                    "location": "query"
+                },
+                "codes": {
+                    "description": "list of kintone app code",
+                    "location": "query"
+                },
+                "name": {
+                    "description": "(part of) kintone app name",
+                    "location": "query"
+                },
+                "spaceIds": {
+                    "description": "list of space id",
+                    "location": "query"
+                },
+                "limit": {
+                    "description": "limit",
+                    "location": "query"
+                },
+                "offset": {
+                    "description": "offset",
+                    "location": "query"
+                }
+            }
         }
     }
 }
