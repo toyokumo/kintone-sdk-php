@@ -4,6 +4,7 @@ namespace Cstap\Kintone;
 
 use Cstap\Kintone\KintoneClientBase as ClientBase;
 use Cstap\Kintone\Common\Exception\KintoneTestConnectionSuccessException;
+use Cstap\Kintone\Common\Exception\KintoneException;
 use Guzzle\Common\Collection;
 use Guzzle\Service\Description\ServiceDescription;
 use Cstap\Kintone\Plugin\KintoneAuth;
@@ -88,6 +89,46 @@ class KintoneClient extends ClientBase
         return $base.$appId;
     }
 
+    /**
+     * decomposeBrowseUrl
+     * 
+     * @param string $url
+     * @return array
+     * @throws KintoneException
+     */
+    public static function decomposeBrowseUrl($url)
+    {
+        $url = trim((string) $url);
+        $subdomain = null;
+        $domain = null;
+        $appId = null;
+        $guestSpaceId = null;
+        
+        // 通常スペースのアプリ
+        if (preg_match("/^https?:\/\/([^.]+)(?:\.s)?\.([^\/]+)\/k\/([0-9]+).*$/", $url, $matches)) {
+            $subdomain = $matches[1];
+            $domain = $matches[2];
+            $appId = $matches[3];
+            
+        // ゲストスペース内のアプリ
+        } elseif (preg_match("/^https?:\/\/([^.]+)(?:\.s)?\.([^\/]+)\/k\/guest\/([0-9]+)\/([^\/]+).*$/", $url, $matches)) {
+            $subdomain = $matches[1];
+            $domain = $matches[2];
+            $guestSpaceId = $matches[3];
+            $appId = $matches[4];
+            
+        } else {
+            throw new KintoneException(sprintf("invalid url:%s", $url));
+        }
+        
+        return [
+            "subdomain" => $subdomain,
+            "domain" => $domain,
+            "appId" => $appId,
+            "guestSpaceId" => $guestSpaceId
+        ];
+    }
+    
     /**
      * test connection
      * 認証テストは不明なアプリIDを指定
