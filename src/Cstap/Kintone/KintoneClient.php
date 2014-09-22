@@ -118,7 +118,7 @@ class KintoneClient extends ClientBase
             $appId = $matches[4];
             
         } else {
-            throw new KintoneException(sprintf("invalid url:%s", $url));
+            throw new KintoneException('kintone.unknown_url');
         }
         
         return [
@@ -146,7 +146,7 @@ class KintoneClient extends ClientBase
         if ($response instanceof \Guzzle\Http\Message\Response) {
             $url = $response->getEffectiveUrl();
             if ($url && strpos($url, $this->getBaseUrl()) !== 0) {
-                throw new \Exception('kintone.unknown_url');
+                throw new KintoneException('kintone.unknown_url');
             }
         }
 
