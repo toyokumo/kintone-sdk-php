@@ -149,6 +149,16 @@
                     "location": "query"
                 }
             }
+        },
+        "GetSpace": {
+            "httpMethod": "GET",
+            "uri": "space.json",
+            "parameters": {
+                "id": {
+                    "description": "kintone space id",
+                    "location": "query"
+                }
+            }
         }
     }
 }
