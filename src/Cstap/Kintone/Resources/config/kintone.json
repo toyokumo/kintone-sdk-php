@@ -77,9 +77,9 @@
                 }
             }
         },
-        "DeleteRecord": {
+        "DeleteRecords": {
             "httpMethod": "DELETE",
-            "uri": "record.json",
+            "uri": "records.json",
             "parameters": {
                 "app": {
                     "description": "kintone app id",
