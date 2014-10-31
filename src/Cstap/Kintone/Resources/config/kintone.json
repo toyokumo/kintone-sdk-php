@@ -41,6 +41,20 @@
                 }
             }
         },
+        "PostRecords": {
+            "httpMethod": "POST",
+            "uri": "records.json",
+            "parameters": {
+                "app": {
+                    "description": "kintone app id",
+                    "location": "json"
+                },
+                "records": {
+                    "description": "record data",
+                    "location": "json"
+                }
+            }
+        },
         "PutRecord": {
             "httpMethod": "PUT",
             "uri": "record.json",
