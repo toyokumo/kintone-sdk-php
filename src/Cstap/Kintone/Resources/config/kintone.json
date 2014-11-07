@@ -124,6 +124,16 @@
                 }
             }
         },
+        "PostFile": {
+            "httpMethod": "POST",
+            "uri": "file.json",
+            "parameters": {
+                "file": {
+                    "description": "file",
+                    "location": "postFile"
+                }
+            }
+        },
         "GetApp": {
             "httpMethod": "GET",
             "uri": "app.json",
