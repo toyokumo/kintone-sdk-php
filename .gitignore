@@ -2,3 +2,7 @@
 /nbproject/private/
 /nbproject/
 /app/logs/kintone.log
+
+
+# PHPStorm
+.idea
