@@ -56,7 +56,7 @@ class KintoneAuth implements EventSubscriberInterface
         }
 
         //$opts->set(CURLOPT_VERBOSE, true);
-        //$opts->set(CURLOPT_STDERR, fopen(__DIR__  . '/../../../../app/logs/kintone.log', 'w'));
+        //$opts->set(CURLOPT_STDERR, fopen($this->config->get('logfile'), 'w'));
 
         // クライアント証明書
         if ($this->config['useClientCert']) {
