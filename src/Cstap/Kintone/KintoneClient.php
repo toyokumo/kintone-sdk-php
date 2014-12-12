@@ -87,7 +87,7 @@ class KintoneClient extends ClientBase
             return $base.sprintf("guest/%d/%d/", $guestSpaceId, $appId);
         }
 
-        return $base.$appId;
+        return $base . $appId . '/';
     }
 
     /**
