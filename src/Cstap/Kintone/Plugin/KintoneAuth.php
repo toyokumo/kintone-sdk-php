@@ -55,6 +55,10 @@ class KintoneAuth implements EventSubscriberInterface
             }
         }
 
+        // default curl options
+        $opts = $request->getCurlOptions();
+        $opts->set(CURLOPT_SSL_VERIFYPEER, false);
+
         //$opts->set(CURLOPT_VERBOSE, true);
         //$opts->set(CURLOPT_STDERR, fopen($this->config->get('logfile'), 'w'));
 
