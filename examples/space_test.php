@@ -30,6 +30,7 @@ var_dump($fs);
  * inputConfig
  *
  * @param string $key
+ * @return string
  */
 function inputConfig($key)
 {
