@@ -13,7 +13,7 @@ Installation
 まず Composer をインストールする必要があります. 下記はグローバルインス
 トールを行う例です.
 
-```bash
+```{.bash}
 # Install Composer
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
@@ -22,14 +22,20 @@ mv composer.phar /usr/local/bin/composer
 Usage
 -----
 
-`examples` ディレクトリを参照して下さい.
+`omposer install` します.
+
+```{.bash}
+composer install cstap/kintone-sdk-php
+```
+
+使い方は, `examples` ディレクトリを参照して下さい.
 
 Contributing
 ------------
 
 まず, プロジェクトを clone し, 依存ライブラリをインストールしてください.
 
-```bash
+```{.bash}
 git clone https://bts.cstap.com/git/kintone-sdk-php
 cd kintone-sdk-php
 composer install
@@ -39,3 +45,8 @@ composer install
 
 なお, 厳密である必要はありませんが, コーディング規約はPSR-2準拠としま
 す(examplesを除く, php-cs-fixer等の使用を推奨).
+
+ライセンス
+------------
+
+MIT
