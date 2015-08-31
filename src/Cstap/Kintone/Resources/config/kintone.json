@@ -110,6 +110,10 @@
                 "fields": {
                     "description": "kintone app fields",
                     "location": "query"
+                },
+                "totalCount": {
+                    "description": "records total count",
+                    "location": "query"
                 }
             }
         },

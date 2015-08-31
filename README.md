@@ -22,7 +22,7 @@ mv composer.phar /usr/local/bin/composer
 Usage
 -----
 
-`omposer install` します.
+`composer install` します.
 
 ```{.bash}
 composer install cstap/kintone-sdk-php
