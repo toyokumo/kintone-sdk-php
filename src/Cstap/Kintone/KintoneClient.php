@@ -29,7 +29,8 @@ class KintoneClient extends ClientBase
         $default = [
             'useClientCert' => false,
             'domain' => "cybozu.com",
-            'logfile' => __DIR__  . '/../../../app/logs/kintone.log'
+            'logfile' => __DIR__  . '/../../../app/logs/kintone.log',
+            'useLog' => true
         ];
 
         $required = [
@@ -46,8 +47,10 @@ class KintoneClient extends ClientBase
         $client->addSubscriber(new KintoneError($config->toArray()));
         $client->setDescription(ServiceDescription::factory(__DIR__ . "/Resources/config/kintone.json"));
 
-        $logPlugin = LogPlugin::getDebugPlugin(TRUE, fopen($config->get('logfile'), 'a'));
-        $client->addSubscriber($logPlugin);
+        if ($config->get('useLog')) {
+            $logPlugin = LogPlugin::getDebugPlugin(TRUE, fopen($config->get('logfile'), 'a'));
+            $client->addSubscriber($logPlugin);
+        }
 
         return $client;
     }
