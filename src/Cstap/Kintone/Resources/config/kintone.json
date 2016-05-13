@@ -128,6 +128,51 @@
                 }
             }
         },
+        "GetComments": {
+            "httpMethod": "GET",
+            "uri": "record/comments.json",
+            "responseClass": "Cstap\\Kintone\\Response\\RawResponse",
+            "parameters": {
+                "app": {
+                    "description": "kintone app id",
+                    "location": "query"
+                },
+                "record": {
+                    "description": "record id",
+                    "location": "query"
+                },
+                "order": {
+                    "description": "sort order of comment ID's. (asc | desc)",
+                    "location": "query"
+                },
+                "offset": {
+                    "description": "offset",
+                    "location": "query"
+                },
+                "limit": {
+                    "description": "limit (default 10; max 10)",
+                    "location": "query"
+                }
+            }
+        },
+        "PostComment": {
+            "httpMethod": "POST",
+            "uri": "record/comment.json",
+            "parameters": {
+                "app": {
+                    "description": "kintone app id",
+                    "location": "json"
+                },
+                "record": {
+                    "description": "record id",
+                    "location": "json"
+                },
+                "comment": {
+                    "description": "comment body",
+                    "location": "json"
+                }
+            }
+        },
         "PostFile": {
             "httpMethod": "POST",
             "uri": "file.json",
